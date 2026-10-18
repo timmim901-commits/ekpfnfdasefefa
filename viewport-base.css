@@ -1,0 +1,140 @@
+/* viewport-base.css - 16:9 slide viewport, keyboard navigation styling.
+   Paste under <style> above the chosen preset's :root block. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scales a 1920x1080 canvas to fit any window while keeping 16:9. */
+#deck {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.stage {
+  width: 1920px;
+  height: 1080px;
+  transform-origin: center center;
+  position: relative;
+  background: var(--bg);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 96px 128px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide h1 {
+  font-family: var(--font-display);
+  font-size: var(--title-size);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--fg);
+}
+
+.slide h1 .accent { color: var(--accent); }
+
+.slide h2 {
+  font-family: var(--font-display);
+  font-size: calc(var(--title-size) * 0.6);
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.slide p, .slide li {
+  font-size: var(--body-size);
+  max-width: 1400px;
+  color: var(--fg);
+}
+
+.slide ul, .slide ol { padding-left: 1.5em; }
+.slide li + li { margin-top: 0.6em; }
+
+.slide .kicker {
+  font-family: var(--font-display);
+  font-size: calc(var(--body-size) * 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.slide .footnote {
+  position: absolute;
+  bottom: 48px;
+  left: 128px;
+  right: 128px;
+  font-size: calc(var(--body-size) * 0.7);
+  color: var(--muted);
+}
+
+/* Progress bar + slide number, bottom-right. */
+.chrome {
+  position: fixed;
+  bottom: 16px;
+  right: 24px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--muted);
+  z-index: 10;
+  user-select: none;
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  width: 0%;
+  transition: width 240ms ease;
+  z-index: 10;
+}
+
+/* Two-column body layout - add class="cols" on the slide. */
+.slide.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* Full-bleed media slide. */
+.slide.media { padding: 0; }
+.slide.media > img, .slide.media > video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Cover slide variant - centered, giant title. */
+.slide.cover {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.slide.cover h1 { font-size: calc(var(--title-size) * 1.3); }
